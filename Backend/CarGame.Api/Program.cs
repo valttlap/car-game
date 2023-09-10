@@ -28,7 +28,7 @@ var dataSource = dataSourceBuilder.Build();
 
 builder.Services.AddDbContext<DataContext>(opt =>
 {
-    opt.UseNpgsql(dataSource);
+    opt.UseNpgsql(dataSource, o => o.UseNetTopologySuite());
     opt.UseSnakeCaseNamingConvention();
 });
 

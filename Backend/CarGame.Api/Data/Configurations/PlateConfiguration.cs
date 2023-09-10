@@ -14,6 +14,7 @@ public class PlateConfiguration : IEntityTypeConfiguration<Plate>
     {
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id).UseIdentityAlwaysColumn();
+        builder.Property(p => p.Code).HasMaxLength(2);
 
         var plates = PlateSeedData.GetPlates();
         builder.HasData(plates);

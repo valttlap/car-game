@@ -13,10 +13,12 @@ public class DataContext : DbContext
     {
     }
     public DbSet<Plate> Plates { get; set; } = default!;
+    public DbSet<Sighting> Sightings { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new PlateConfiguration());
+        modelBuilder.ApplyConfiguration(new SightingConfiguration());
     }
 }
