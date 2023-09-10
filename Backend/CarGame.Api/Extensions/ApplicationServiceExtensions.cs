@@ -3,6 +3,8 @@
 
 using System.Reflection;
 using CarGame.Api.Exceptions;
+using CarGame.Api.Interfaces;
+using CarGame.Api.Repositories;
 using Microsoft.OpenApi.Models;
 
 namespace CarGame.Api.Extensions;
@@ -23,6 +25,7 @@ public static class ApplicationServiceExtensions
             });
         });
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddSwaggerGen(opt =>
         {
             opt.SwaggerDoc("v1", new OpenApiInfo
