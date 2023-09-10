@@ -1,6 +1,7 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.Globalization;
 using CarGame.Api.Interfaces;
 using CarGame.Model.Models;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +19,27 @@ public class PlateRepository : IPlateRepository
 
     public async Task<IEnumerable<Plate>> FindPlatesByAbbrAsync(string abbr, bool isDiplomat)
     {
-        return await _context.Plates
-                             .Where(p => p.IsDiplomat == !isDiplomat &&
-                                         (isDiplomat ? p.DiplomatCode.ToString() : p.CountryAbbreviation)!.StartsWith(abbr))
-                             .ToListAsync()
-                             .ConfigureAwait(false);
+        abbr = abbr.ToUpper();
+
+        IQueryable<Plate> query = _context.Plates;
+
+        if (isDiplomat)
+        {
+            query = query.Where(p => p.IsDiplomat && p.DiplomatCode.HasValue);
+        }
+        else
+        {
+            query = query.Where(p => !p.IsDiplomat && p.CountryAbbreviation != null && p.CountryAbbreviation.StartsWith(abbr));
+        }
+
+        var plates = await query.ToListAsync().ConfigureAwait(false);
+
+        if (isDiplomat)
+        {
+            plates = plates.Where(p => p.DiplomatCode.HasValue && p.DiplomatCode.Value.ToString(CultureInfo.InvariantCulture).StartsWith(abbr)).ToList();
+        }
+
+        return plates;
     }
 
     public async Task<IEnumerable<Plate>> GetDiplomatPlatesAsync()
