@@ -15,6 +15,8 @@ public class PlateConfiguration : IEntityTypeConfiguration<Plate>
         builder.Property(p => p.Id).UseIdentityAlwaysColumn();
         builder.Property(p => p.Code).HasMaxLength(2);
 
+        builder.Property(p => p.Country).IsRequired();
+
         builder.HasData(PlateSeedData.GetPlates());
 
         builder.ToTable("Plates", t => t.HasCheckConstraint(

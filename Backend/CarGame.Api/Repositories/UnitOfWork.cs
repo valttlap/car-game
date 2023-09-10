@@ -20,7 +20,7 @@ public class UnitOfWork : IUnitOfWork
 
     public IPlateRepository PlateRepository => new PlateRepository(_context);
 
-    public ISightingRepository SightingRepository => new SightingRepository(_context, _mapper);
+    public ISightingRepository SightingRepository => new SightingRepository(_context);
 
     public async Task<bool> Complete()
     {
