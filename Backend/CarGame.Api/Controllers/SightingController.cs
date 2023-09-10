@@ -39,6 +39,10 @@ namespace CarGame.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<SightingDto>> AddSighting(SightingDto sightingDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var sighting = _mapper.Map<Sighting>(sightingDto);
             try
             {
@@ -47,6 +51,10 @@ namespace CarGame.Api.Controllers
             catch (AlreadySeenException)
             {
                 return BadRequest("This sighting has already been recorded.");
+            }
+            catch
+            {
+                return StatusCode(500, "An error occurred while adding the sighting.");
             }
             await _unitOfWork.Complete().ConfigureAwait(false);
             return Ok(sightingDto);
