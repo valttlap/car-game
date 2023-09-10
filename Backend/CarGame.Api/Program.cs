@@ -24,6 +24,7 @@ if (builder.Environment.IsDevelopment())
 var connString = connStringBuilder.ConnectionString;
 
 var dataSourceBuilder = new NpgsqlDataSourceBuilder(connString);
+dataSourceBuilder.UseNetTopologySuite();
 var dataSource = dataSourceBuilder.Build();
 
 builder.Services.AddDbContext<CarGameContext>(opt =>

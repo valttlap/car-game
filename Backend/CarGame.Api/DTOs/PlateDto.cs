@@ -5,8 +5,13 @@ namespace CarGame.Api.DTOs;
 
 public class PlateDto
 {
-    public string Country { get; set; } = default!;
-    public string? Abbreviation { get; set; }
-    public string? Code { get; set; }
-    public bool IsDiplomat { get; set; } = default!;
+    public int Id { get; set; }
+
+    public string Country { get; set; } = null!;
+
+    public string? CountryAbbreviation { get; set; }
+
+    public int? DiplomatCode { get; set; }
+
+    public bool IsDiplomat { get; set; }
 }

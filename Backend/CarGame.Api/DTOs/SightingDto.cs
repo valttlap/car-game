@@ -6,8 +6,14 @@ namespace CarGame.Api.DTOs;
 public class SightingDto
 {
     public int PlateId { get; set; }
+
+    public DateTime Date { get; set; }
+
     public string? Description { get; set; }
+
     public bool IsDiplomat { get; set; }
+
     public int? DiplomatNumber { get; set; }
-    public string Location { get; set; } = default!;
+
+    public string Location { get; set; } = null!;
 }

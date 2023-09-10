@@ -27,6 +27,11 @@ public class AutoMapperProfiles : Profile
 
     private static Geometry? GeoJsonToGeometry(string geoJson)
     {
-        return !string.IsNullOrEmpty(geoJson) ? new GeoJsonReader().Read<Geometry>(geoJson) : null;
+        var geom = !string.IsNullOrEmpty(geoJson) ? new GeoJsonReader().Read<Geometry>(geoJson) : null;
+        if (geom != null)
+        {
+            geom.SRID = 3067;
+        }
+        return geom;
     }
 }
