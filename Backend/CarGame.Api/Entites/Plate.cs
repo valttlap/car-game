@@ -5,7 +5,7 @@ namespace CarGame.Api.Entites;
 
 public class Plate
 {
-    public int Id { get; set; }
+    public int Id { get; set; } = default!;
     public string? Country { get; set; }
     public string? Abbreviation { get; set; }
     public string? Code { get; set; }

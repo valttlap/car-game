@@ -12,16 +12,14 @@ public class PlateConfiguration : IEntityTypeConfiguration<Plate>
 {
     public void Configure(EntityTypeBuilder<Plate> builder)
     {
-        builder.HasKey(p => p.Id);
         builder.Property(p => p.Id).UseIdentityAlwaysColumn();
         builder.Property(p => p.Code).HasMaxLength(2);
 
-        var plates = PlateSeedData.GetPlates();
-        builder.HasData(plates);
+        builder.HasData(PlateSeedData.GetPlates());
 
         builder.ToTable("Plates", t => t.HasCheckConstraint(
             "CK_Plate_IsDiplomat_Code_Abbreviation",
-            "((\"IsDiplomat\" = TRUE AND \"Code\" IS NOT NULL AND \"Abbreviation\" IS NULL) OR " +
-            "(\"IsDiplomat\" = FALSE AND \"Abbreviation\" IS NOT NULL AND \"Code\" IS NULL))"));
+            "((\"is_diplomat\" = TRUE AND \"code\" IS NOT NULL AND \"abbreviation\" IS NULL) OR " +
+            "(\"is_diplomat\" = FALSE AND \"abbreviation\" IS NOT NULL AND \"code\" IS NULL))"));
     }
 }

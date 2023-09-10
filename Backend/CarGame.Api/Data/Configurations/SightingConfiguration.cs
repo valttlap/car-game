@@ -11,7 +11,6 @@ public class SightingConfiguration : IEntityTypeConfiguration<Sighting>
 {
     public void Configure(EntityTypeBuilder<Sighting> builder)
     {
-        builder.HasKey(s => s.Id);
         builder.Property(s => s.Id).UseIdentityAlwaysColumn();
         builder.Property(s => s.PlateId).IsRequired();
         builder.Property(s => s.Date)
@@ -23,16 +22,6 @@ public class SightingConfiguration : IEntityTypeConfiguration<Sighting>
         builder.HasOne(s => s.Plate)
             .WithMany()
             .HasForeignKey(s => s.PlateId);
-        builder.ToTable("Sightings", t => t.HasCheckConstraint("CK_PlateId_DiplomatNumber", @"
-        (IsDiplomat = true AND NOT EXISTS (
-            SELECT 1 FROM Sightings s2
-            WHERE s2.PlateId = PlateId AND s2.DiplomatNumber = DiplomatNumber AND s2.Id != Id
-        ))
-        OR
-        (IsDiplomat = false AND NOT EXISTS (
-            SELECT 1 FROM Sightings s2
-            WHERE s2.PlateId = PlateId AND s2.Id != Id
-        ))"));
-        builder.ToTable("Sightings", t => t.HasCheckConstraint("CK_PlateId_DiplomatNumber", "IsDiplomat = false OR (DiplomatNumber IS NOT NULL AND DiplomatNumber >= 1 AND DiplomatNumber <= 99)"));
+        builder.ToTable("sightings", t => t.HasCheckConstraint("CK_plate_id_diplomat_number", "is_diplomat = false OR (diplomat_number IS NOT NULL AND diplomat_number >= 1 AND diplomat_number <= 99)"));
     }
 }
