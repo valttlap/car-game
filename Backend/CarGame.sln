@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarGame.Api", "CarGame.Api\CarGame.Api.csproj", "{966F43B9-8509-4871-82AF-14DD6115E502}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarGame.DbUpdater", "CarGame.DbUpdater\CarGame.DbUpdater.csproj", "{E1439CAF-A383-45C9-9477-8B49AAB03726}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarGame.Model", "CarGame.Model\CarGame.Model.csproj", "{00426F24-CD6A-4630-8AEF-65755860F53C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{966F43B9-8509-4871-82AF-14DD6115E502}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{966F43B9-8509-4871-82AF-14DD6115E502}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{966F43B9-8509-4871-82AF-14DD6115E502}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{966F43B9-8509-4871-82AF-14DD6115E502}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1439CAF-A383-45C9-9477-8B49AAB03726}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1439CAF-A383-45C9-9477-8B49AAB03726}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1439CAF-A383-45C9-9477-8B49AAB03726}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1439CAF-A383-45C9-9477-8B49AAB03726}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00426F24-CD6A-4630-8AEF-65755860F53C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00426F24-CD6A-4630-8AEF-65755860F53C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00426F24-CD6A-4630-8AEF-65755860F53C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00426F24-CD6A-4630-8AEF-65755860F53C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
