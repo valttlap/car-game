@@ -9,5 +9,5 @@ public interface ISightingRepository
 {
     public Task<IEnumerable<Sighting>> GetSightingsAsync();
     public Task<Sighting?> GetSightingByIdAsync(int id);
-    public void AddSighting(Sighting sighting);
+    public Task AddSighting(Sighting sighting);
 }

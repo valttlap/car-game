@@ -3,6 +3,7 @@
 
 using CarGame.Api.Data;
 using CarGame.Api.Entites;
+using CarGame.Api.Exceptions;
 using CarGame.Api.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,8 +18,19 @@ namespace CarGame.Api.Repositories
             _context = context;
         }
 
-        public void AddSighting(Sighting sighting)
+        /// <summary>
+        /// Adds a sighting to the database.
+        /// </summary>
+        /// <param name="sighting">The sighting to add.</param>
+        /// <exception cref="AlreadySeenException">Thrown when the sighting has already been recorded.</exception>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        public async Task AddSighting(Sighting sighting)
         {
+            var alreadySeen = await IsAlreadySeen(sighting).ConfigureAwait(false);
+            if (alreadySeen)
+            {
+                throw new AlreadySeenException();
+            }
             _context.Sightings.Add(sighting);
         }
 
@@ -31,5 +43,14 @@ namespace CarGame.Api.Repositories
         {
             return await _context.Sightings.ToListAsync().ConfigureAwait(false);
         }
+
+        private async Task<bool> IsAlreadySeen(Sighting sighting)
+        {
+            return await _context.Sightings
+                                 .AnyAsync(s => s.PlateId == sighting.PlateId &&
+                                               (!sighting.IsDiplomat || s.DiplomatNumber == sighting.DiplomatNumber))
+                                 .ConfigureAwait(false);
+        }
+
     }
 }

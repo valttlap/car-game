@@ -4,6 +4,7 @@
 using AutoMapper;
 using CarGame.Api.DTOs;
 using CarGame.Api.Entites;
+using CarGame.Api.Exceptions;
 using CarGame.Api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,7 +40,14 @@ namespace CarGame.Api.Controllers
         public async Task<ActionResult<SightingDto>> AddSighting(SightingDto sightingDto)
         {
             var sighting = _mapper.Map<Sighting>(sightingDto);
-            _unitOfWork.SightingRepository.AddSighting(sighting);
+            try
+            {
+                await _unitOfWork.SightingRepository.AddSighting(sighting).ConfigureAwait(false);
+            }
+            catch (AlreadySeenException)
+            {
+                return BadRequest("This sighting has already been recorded.");
+            }
             await _unitOfWork.Complete().ConfigureAwait(false);
             return Ok(sightingDto);
         }
