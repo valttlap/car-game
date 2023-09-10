@@ -3,7 +3,7 @@
 
 using AutoMapper;
 using CarGame.Api.DTOs;
-using CarGame.Api.Entites;
+using CarGame.Model.Models;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 
@@ -17,6 +17,7 @@ public class AutoMapperProfiles : Profile
             .ForMember(dest => dest.Location, opts => opts.MapFrom(src => GeometryToGeoJson(src.Location)))
             .ReverseMap()
             .ForMember(dest => dest.Location, opts => opts.MapFrom(src => GeoJsonToGeometry(src.Location)));
+        CreateMap<Plate, PlateDto>().ReverseMap();
     }
 
     private static string? GeometryToGeoJson(Geometry geometry)

@@ -3,9 +3,9 @@
 
 using AutoMapper;
 using CarGame.Api.DTOs;
-using CarGame.Api.Entites;
 using CarGame.Api.Exceptions;
 using CarGame.Api.Interfaces;
+using CarGame.Model.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarGame.Api.Controllers

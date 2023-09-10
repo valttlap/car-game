@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using AutoMapper;
-using CarGame.Api.Data;
 using CarGame.Api.Interfaces;
+using CarGame.Model.Models;
 
 namespace CarGame.Api.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly DataContext _context;
+    private readonly CarGameContext _context;
 
-    public UnitOfWork(DataContext context, IMapper mapper)
+    public UnitOfWork(CarGameContext context, IMapper mapper)
     {
         _context = context;
     }

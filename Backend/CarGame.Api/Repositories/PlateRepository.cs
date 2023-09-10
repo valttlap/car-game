@@ -1,18 +1,17 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using CarGame.Api.Data;
-using CarGame.Api.Entites;
 using CarGame.Api.Interfaces;
+using CarGame.Model.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarGame.Api.Repositories;
 
 public class PlateRepository : IPlateRepository
 {
-    private readonly DataContext _context;
+    private readonly CarGameContext _context;
 
-    public PlateRepository(DataContext context)
+    public PlateRepository(CarGameContext context)
     {
         _context = context;
     }
@@ -21,7 +20,7 @@ public class PlateRepository : IPlateRepository
     {
         return await _context.Plates
                              .Where(p => p.IsDiplomat == !isDiplomat &&
-                                         (isDiplomat ? p.Code : p.Abbreviation)!.StartsWith(abbr))
+                                         (isDiplomat ? p.DiplomatCode.ToString() : p.CountryAbbreviation)!.StartsWith(abbr))
                              .ToListAsync()
                              .ConfigureAwait(false);
     }

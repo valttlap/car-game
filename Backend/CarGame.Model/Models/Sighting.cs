@@ -3,16 +3,23 @@
 
 using NetTopologySuite.Geometries;
 
-namespace CarGame.Api.Entites;
+namespace CarGame.Model.Models;
 
-public class Sighting
+public partial class Sighting
 {
     public int Id { get; set; }
+
     public int PlateId { get; set; }
+
     public DateTime Date { get; set; }
+
     public string? Description { get; set; }
+
     public bool IsDiplomat { get; set; }
-    public int DiplomatNumber { get; set; }
-    public Point Location { get; set; } = default!;
-    public Plate Plate { get; set; } = default!;
+
+    public int? DiplomatNumber { get; set; }
+
+    public Point Location { get; set; } = null!;
+
+    public virtual Plate Plate { get; set; } = null!;
 }

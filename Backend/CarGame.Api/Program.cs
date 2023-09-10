@@ -1,8 +1,8 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using CarGame.Api.Data;
 using CarGame.Api.Extensions;
+using CarGame.Model.Models;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
@@ -26,10 +26,9 @@ var connString = connStringBuilder.ConnectionString;
 var dataSourceBuilder = new NpgsqlDataSourceBuilder(connString);
 var dataSource = dataSourceBuilder.Build();
 
-builder.Services.AddDbContext<DataContext>(opt =>
+builder.Services.AddDbContext<CarGameContext>(opt =>
 {
     opt.UseNpgsql(dataSource, o => o.UseNetTopologySuite());
-    opt.UseSnakeCaseNamingConvention();
 });
 
 var app = builder.Build();
@@ -47,18 +46,5 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 app.MapControllers();
-
-using var scope = app.Services.CreateScope();
-var services = scope.ServiceProvider;
-try
-{
-    var context = services.GetRequiredService<DataContext>();
-    await context.Database.MigrateAsync().ConfigureAwait(false);
-}
-catch (Exception ex)
-{
-    var logger = services.GetRequiredService<ILogger<Program>>();
-    logger.LogError(ex, "An error occurred during migration");
-}
 
 app.Run();
