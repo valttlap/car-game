@@ -9,7 +9,7 @@ namespace CarGame.Api.Extensions;
 
 public static class ApplicationServiceExtensions
 {
-    public static IServiceCollection AddApplicationsServices(this IServiceCollection services, IConfiguration confing)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration confing)
     {
         services.AddCors(options =>
         {
