@@ -1,0 +1,37 @@
+<div class="container">
+  <form [formGroup]="sightingForm">
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        #isDiplomat
+        id="is-diplomat"
+        type="checkbox"
+        formControlName="isDiplomat" />
+      <label class="form-check-label" for="is-diplomat"
+        >Diplomaattikilpi?</label
+      >
+    </div>
+    <div *ngIf="isDiplomat.checked">
+      <label for="diplomat-number">Diplomaatin tunnus</label>
+      <input
+        id="diplomat-number"
+        type="text"
+        formControlName="diplomatNumber" />
+    </div>
+    <div>
+      <label for="plate-id">Plate ID</label>
+      <input
+        type="text"
+        id="plate-id"
+        formControlName="plateId"
+        [matAutocomplete]="auto" />
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let plate of plates$ | async" [value]="plate">
+          {{
+            plate.isDiplomat ? plate.diplomatCode : plate.countryAbbreviation
+          }}
+        </mat-option>
+      </mat-autocomplete>
+    </div>
+  </form>
+</div>

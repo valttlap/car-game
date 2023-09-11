@@ -17,13 +17,24 @@ public class PlateRepository : IPlateRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Plate>> FindPlatesByAbbrAsync(string abbr, bool isDiplomat)
+    public async Task<IEnumerable<Plate>> FindPlatesByAbbrAsync(string? abbr, bool? isDiplomat = false)
     {
+        if (string.IsNullOrEmpty(abbr))
+        {
+            if (isDiplomat.HasValue && isDiplomat.Value)
+            {
+                return await GetDiplomatPlatesAsync().ConfigureAwait(false);
+            }
+            else
+            {
+                return await GetRegularPlatesAsync().ConfigureAwait(false);
+            }
+        }
         abbr = abbr.ToUpper();
 
         IQueryable<Plate> query = _context.Plates;
 
-        if (isDiplomat)
+        if (isDiplomat.HasValue && isDiplomat.Value)
         {
             query = query.Where(p => p.IsDiplomat && p.DiplomatCode.HasValue);
         }
@@ -34,7 +45,7 @@ public class PlateRepository : IPlateRepository
 
         var plates = await query.ToListAsync().ConfigureAwait(false);
 
-        if (isDiplomat)
+        if (isDiplomat.HasValue && isDiplomat.Value)
         {
             plates = plates.Where(p => p.DiplomatCode.HasValue && p.DiplomatCode.Value.ToString(CultureInfo.InvariantCulture).StartsWith(abbr)).ToList();
         }

@@ -52,8 +52,8 @@ public class PlateController : BaseApiController
     }
 
     [HttpGet("search")]
-    public async Task<ActionResult<IEnumerable<PlateDto>>> FindPlatesByAbbr([FromQuery] string abbr,
-                                                                            [FromQuery] bool isDiplomat = false)
+    public async Task<ActionResult<IEnumerable<PlateDto>>> FindPlatesByAbbr([FromQuery] string? abbr,
+                                                                            [FromQuery] bool? isDiplomat = false)
     {
         var plates = await _unitOfWork.PlateRepository.FindPlatesByAbbrAsync(abbr, isDiplomat).ConfigureAwait(false);
         var platesDto = _mapper.Map<IEnumerable<PlateDto>>(plates);

@@ -15,7 +15,9 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 
 export const API_BASE_URL = new InjectionToken<string>('https://localhost:7235');
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class PlateClient {
     private http: HttpClient;
     private baseUrl: string;
@@ -273,7 +275,9 @@ export class PlateClient {
     }
 }
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class SightingClient {
     private http: HttpClient;
     private baseUrl: string;
@@ -448,6 +452,7 @@ export interface SightingDto {
     isDiplomat: boolean;
     diplomatNumber?: number | undefined;
     location: string;
+    srid: number;
 }
 
 export class ApiException extends Error {
