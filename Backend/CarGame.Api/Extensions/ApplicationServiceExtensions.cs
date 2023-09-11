@@ -5,6 +5,7 @@ using System.Reflection;
 using CarGame.Api.Exceptions;
 using CarGame.Api.Interfaces;
 using CarGame.Api.Repositories;
+using CarGame.Api.Services;
 using Microsoft.OpenApi.Models;
 
 namespace CarGame.Api.Extensions;
@@ -26,6 +27,7 @@ public static class ApplicationServiceExtensions
         });
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddSingleton<ICoordinateTransformationService, CoordinateTransformationService>();
         services.AddSwaggerGen(opt =>
         {
             opt.SwaggerDoc("v1", new OpenApiInfo

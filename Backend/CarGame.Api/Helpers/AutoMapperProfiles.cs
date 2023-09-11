@@ -11,12 +11,13 @@ namespace CarGame.Api.Helpers;
 
 public class AutoMapperProfiles : Profile
 {
+
     public AutoMapperProfiles()
     {
         CreateMap<Sighting, SightingDto>()
             .ForMember(dest => dest.Location, opts => opts.MapFrom(src => GeometryToGeoJson(src.Location)))
             .ReverseMap()
-            .ForMember(dest => dest.Location, opts => opts.MapFrom(src => GeoJsonToGeometry(src.Location)));
+            .ForMember(dest => dest.Location, opts => opts.MapFrom(src => GeoJsonToGeometry(src.Location, src.SRID)));
         CreateMap<Plate, PlateDto>().ReverseMap();
     }
 
@@ -25,12 +26,12 @@ public class AutoMapperProfiles : Profile
         return geometry != null ? new GeoJsonWriter().Write(geometry) : null;
     }
 
-    private static Geometry? GeoJsonToGeometry(string geoJson)
+    private static Geometry? GeoJsonToGeometry(string geoJson, int srid = 3067)
     {
-        var geom = !string.IsNullOrEmpty(geoJson) ? new GeoJsonReader().Read<Geometry>(geoJson) : null;
+        var geom = !string.IsNullOrEmpty(geoJson) ? new GeoJsonReader().Read<Point>(geoJson) : null;
         if (geom != null)
         {
-            geom.SRID = 3067;
+            geom.SRID = srid;
         }
         return geom;
     }

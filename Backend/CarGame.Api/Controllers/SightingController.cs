@@ -13,11 +13,14 @@ namespace CarGame.Api.Controllers
     public class SightingController : BaseApiController
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICoordinateTransformationService _coordinateTransformationService;
+
         private readonly IMapper _mapper;
-        public SightingController(IUnitOfWork unitOfWork, IMapper mapper)
+        public SightingController(IUnitOfWork unitOfWork, IMapper mapper, ICoordinateTransformationService coordinateTransformationService)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _coordinateTransformationService = coordinateTransformationService;
         }
 
         [HttpGet]
@@ -44,6 +47,10 @@ namespace CarGame.Api.Controllers
                 return BadRequest(ModelState);
             }
             var sighting = _mapper.Map<Sighting>(sightingDto);
+            if (sighting.Location.SRID != 3067)
+            {
+                sighting.Location = _coordinateTransformationService.TransformTo3067(sighting.Location);
+            }
             try
             {
                 await _unitOfWork.SightingRepository.AddSighting(sighting).ConfigureAwait(false);
