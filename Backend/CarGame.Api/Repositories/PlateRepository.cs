@@ -72,4 +72,10 @@ public class PlateRepository : IPlateRepository
     {
         return await _context.Plates.Where(p => !p.IsDiplomat).ToListAsync().ConfigureAwait(false);
     }
+
+    public async Task<bool> PlateExistsAsync(int id)
+    {
+        return await _context.Plates.AnyAsync(p => p.Id == id).ConfigureAwait(false);
+    }
+
 }

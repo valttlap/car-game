@@ -11,9 +11,9 @@
 import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 'rxjs/operators';
 import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase, HttpContext } from '@angular/common/http';
 
-export const API_BASE_URL = new InjectionToken<string>('https://localhost:7235');
+export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 @Injectable({
     providedIn: 'root'
@@ -28,13 +28,17 @@ export class PlateClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "https://localhost:7235";
     }
 
-    getPlates(): Observable<PlateDto[]> {
+    /**
+     * GetPlates
+     */
+    getPlates(httpContext?: HttpContext): Observable<PlateDto[]> {
         let url_ = this.baseUrl + "/api/Plate";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
+            context: httpContext,
             headers: new HttpHeaders({
                 "Accept": "application/json"
             })
@@ -75,13 +79,17 @@ export class PlateClient {
         return _observableOf(null as any);
     }
 
-    getDiplomatPlates(): Observable<PlateDto[]> {
+    /**
+     * GetDiplomatPlates
+     */
+    getDiplomatPlates(httpContext?: HttpContext): Observable<PlateDto[]> {
         let url_ = this.baseUrl + "/api/Plate/diplomat";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
+            context: httpContext,
             headers: new HttpHeaders({
                 "Accept": "application/json"
             })
@@ -122,13 +130,17 @@ export class PlateClient {
         return _observableOf(null as any);
     }
 
-    getRegularPlates(): Observable<PlateDto[]> {
+    /**
+     * GetRegularPlates
+     */
+    getRegularPlates(httpContext?: HttpContext): Observable<PlateDto[]> {
         let url_ = this.baseUrl + "/api/Plate/regular";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
+            context: httpContext,
             headers: new HttpHeaders({
                 "Accept": "application/json"
             })
@@ -169,7 +181,10 @@ export class PlateClient {
         return _observableOf(null as any);
     }
 
-    getPlateById(id: number): Observable<PlateDto> {
+    /**
+     * GetPlateById
+     */
+    getPlateById(id: number, httpContext?: HttpContext): Observable<PlateDto> {
         let url_ = this.baseUrl + "/api/Plate/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -179,6 +194,7 @@ export class PlateClient {
         let options_ : any = {
             observe: "response",
             responseType: "blob",
+            context: httpContext,
             headers: new HttpHeaders({
                 "Accept": "application/json"
             })
@@ -211,6 +227,10 @@ export class PlateClient {
             result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as PlateDto;
             return _observableOf(result200);
             }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -219,21 +239,23 @@ export class PlateClient {
         return _observableOf(null as any);
     }
 
-    findPlatesByAbbr(abbr: string | undefined, isDiplomat: boolean | undefined): Observable<PlateDto[]> {
+    /**
+     * FindPlatesByAbbr
+     * @param abbr (optional) 
+     * @param isDiplomat (optional) 
+     */
+    findPlatesByAbbr(abbr: string | null | undefined, isDiplomat: boolean | null | undefined, httpContext?: HttpContext): Observable<PlateDto[]> {
         let url_ = this.baseUrl + "/api/Plate/search?";
-        if (abbr === null)
-            throw new Error("The parameter 'abbr' cannot be null.");
-        else if (abbr !== undefined)
+        if (abbr !== undefined && abbr !== null)
             url_ += "abbr=" + encodeURIComponent("" + abbr) + "&";
-        if (isDiplomat === null)
-            throw new Error("The parameter 'isDiplomat' cannot be null.");
-        else if (isDiplomat !== undefined)
+        if (isDiplomat !== undefined && isDiplomat !== null)
             url_ += "isDiplomat=" + encodeURIComponent("" + isDiplomat) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
+            context: httpContext,
             headers: new HttpHeaders({
                 "Accept": "application/json"
             })
@@ -288,13 +310,17 @@ export class SightingClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "https://localhost:7235";
     }
 
-    getSightings(): Observable<SightingDto[]> {
+    /**
+     * GetSightings
+     */
+    getSightings(httpContext?: HttpContext): Observable<SightingDto[]> {
         let url_ = this.baseUrl + "/api/Sighting";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
+            context: httpContext,
             headers: new HttpHeaders({
                 "Accept": "application/json"
             })
@@ -335,7 +361,10 @@ export class SightingClient {
         return _observableOf(null as any);
     }
 
-    addSighting(sightingDto: SightingDto): Observable<SightingDto> {
+    /**
+     * AddSighting
+     */
+    addSighting(sightingDto: SightingDto, httpContext?: HttpContext): Observable<SightingDto> {
         let url_ = this.baseUrl + "/api/Sighting";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -345,6 +374,7 @@ export class SightingClient {
             body: content_,
             observe: "response",
             responseType: "blob",
+            context: httpContext,
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
                 "Accept": "application/json"
@@ -378,6 +408,14 @@ export class SightingClient {
             result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as SightingDto;
             return _observableOf(result200);
             }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("A server side error occurred.", status, _responseText, _headers);
+            }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -386,7 +424,10 @@ export class SightingClient {
         return _observableOf(null as any);
     }
 
-    getSightingById(id: number): Observable<SightingDto> {
+    /**
+     * GetSightingById
+     */
+    getSightingById(id: number, httpContext?: HttpContext): Observable<SightingDto> {
         let url_ = this.baseUrl + "/api/Sighting/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -396,6 +437,7 @@ export class SightingClient {
         let options_ : any = {
             observe: "response",
             responseType: "blob",
+            context: httpContext,
             headers: new HttpHeaders({
                 "Accept": "application/json"
             })
@@ -427,6 +469,10 @@ export class SightingClient {
             let result200: any = null;
             result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as SightingDto;
             return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("A server side error occurred.", status, _responseText, _headers);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {

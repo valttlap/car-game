@@ -12,4 +12,5 @@ public interface IPlateRepository
     public Task<IEnumerable<Plate>> GetDiplomatPlatesAsync();
     public Task<Plate?> GetPlateByIdAsync(int id);
     public Task<IEnumerable<Plate>> FindPlatesByAbbrAsync(string? abbr, bool? isDiplomat);
+    public Task<bool> PlateExistsAsync(int id);
 }

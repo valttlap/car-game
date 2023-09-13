@@ -1,37 +1,69 @@
-<div class="container">
-  <form [formGroup]="sightingForm">
-    <div class="form-check">
+<div class="container mt-3">
+  <form [formGroup]="sightingForm" (ngSubmit)="onSubmit()">
+    <div class="form-check mb-3">
       <input
         class="form-check-input"
         #isDiplomat
         id="is-diplomat"
         type="checkbox"
-        formControlName="isDiplomat" />
+        formControlName="isDiplomat"
+        (change)="sightingForm.get('plateId')?.setValue('')" />
       <label class="form-check-label" for="is-diplomat"
         >Diplomaattikilpi?</label
       >
     </div>
-    <div *ngIf="isDiplomat.checked">
-      <label for="diplomat-number">Diplomaatin tunnus</label>
-      <input
-        id="diplomat-number"
-        type="text"
-        formControlName="diplomatNumber" />
+    <div class="row mb-3">
+      <label class="col-sm-2 col-form-label" for="plate-id"
+        >Rekisterikilven lyhenne</label
+      >
+      <div class="col-sm-10">
+        <input
+          type="text"
+          id="plate-id"
+          formControlName="plateId"
+          class="form-control"
+          list="plateIdOptions"
+          placeholder="Kirjoita etsiäksesi..."
+          (change)="onPlateChange($event)" />
+        <datalist id="plateIdOptions">
+          <option
+            *ngFor="let regPlate of plates$ | async"
+            [value]="
+              regPlate.isDiplomat
+                ? regPlate.diplomatCode
+                : regPlate.countryAbbreviation
+            ">
+            {{ regPlate.country }}
+          </option>
+        </datalist>
+      </div>
     </div>
-    <div>
-      <label for="plate-id">Plate ID</label>
-      <input
-        type="text"
-        id="plate-id"
-        formControlName="plateId"
-        [matAutocomplete]="auto" />
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-        <mat-option *ngFor="let plate of plates$ | async" [value]="plate">
-          {{
-            plate.isDiplomat ? plate.diplomatCode : plate.countryAbbreviation
-          }}
-        </mat-option>
-      </mat-autocomplete>
+    <div *ngIf="isDiplomat.checked" class="row mb-3">
+      <label class="col-sm-2 col-form-label" for="diplomat-number"
+        >Diplomaatin tunnus</label
+      >
+      <div class="col-sm-10">
+        <input
+          id="diplomat-number"
+          type="number"
+          formControlName="diplomatNumber"
+          min="1"
+          max="99"
+          class="form-control" />
+      </div>
     </div>
+    <div class="row mb-3">
+      <label for="description" class="col-sm-2 col-form-label">Kuvaus</label>
+      <div class="col-sm-10">
+        <textarea
+          name=""
+          id="description"
+          cols="30"
+          rows="3"
+          formControlName="description"
+          class="form-control"></textarea>
+      </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Tallenna</button>
   </form>
 </div>

@@ -1,8 +1,14 @@
-import { SightingClient, PlateClient, PlateDto } from './../../services/api';
+import {
+  SightingClient,
+  PlateClient,
+  PlateDto,
+  SightingDto,
+} from './../../services/api';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, of, startWith, switchMap } from 'rxjs';
-
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable, map, of, startWith, switchMap, take } from 'rxjs';
+import { ConvertToGeoJSON } from 'src/app/helpers/convert-to-geojson';
+import { PlateIdExistsValidatorService } from 'src/app/validators/plate-id-exists-validator.service';
 @Component({
   selector: 'app-sighting',
   templateUrl: './sighting.component.html',
@@ -10,6 +16,7 @@ import { Observable, of, startWith, switchMap } from 'rxjs';
 })
 export class SightingComponent implements OnInit {
   private _currLocation?: GeolocationPosition;
+  private _plateDto?: PlateDto;
 
   watcherId?: number;
   // navigator.geolocation.clearWatch(this.watcherId);
@@ -23,16 +30,16 @@ export class SightingComponent implements OnInit {
   sightingForm = new FormGroup({
     isDiplomat: new FormControl<boolean>(false),
     plateId: new FormControl<string>(''),
-    diplomatNumber: new FormControl<number>(1),
-    description: new FormControl<string>(''),
-    srid: new FormControl<number>(4326),
+    diplomatNumber: new FormControl<number | null>(null),
+    description: new FormControl<string | null>(null),
   });
 
   plates$: Observable<PlateDto[]>;
 
   constructor(
     private SightingClient: SightingClient,
-    private plateClient: PlateClient
+    private plateClient: PlateClient,
+    private plateIdExistsValidatorService: PlateIdExistsValidatorService
   ) {
     type PlateIdValue = string | PlateDto | null;
 
@@ -48,20 +55,41 @@ export class SightingComponent implements OnInit {
       ) ?? of([]);
   }
 
-  displayFn(plate: PlateDto): string {
-    return plate
-      ? plate.isDiplomat
-        ? plate.diplomatCode?.toString() ?? ''
-        : plate.countryAbbreviation ?? ''
-      : '';
-  }
-
   get currLocation(): GeolocationPosition | undefined {
     return this._currLocation;
   }
 
   set currLocation(value: GeolocationPosition) {
     this._currLocation = value;
+  }
+
+  get plateDto(): PlateDto | undefined {
+    return this._plateDto;
+  }
+
+  set plateDto(value: PlateDto) {
+    this._plateDto = value;
+  }
+
+  onPlateChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const selectedValue = target.value;
+    this.plates$
+      .pipe(
+        take(1),
+        map(plates =>
+          plates.find(plate =>
+            plate.isDiplomat
+              ? plate.diplomatCode === parseInt(selectedValue)
+              : plate.countryAbbreviation === selectedValue
+          )
+        )
+      )
+      .subscribe(selectedPlate => {
+        if (selectedPlate) {
+          this.plateDto = selectedPlate;
+        }
+      });
   }
 
   ngOnInit(): void {
@@ -80,5 +108,33 @@ export class SightingComponent implements OnInit {
     } else {
       console.log('No support for geolocation');
     }
+  }
+
+  onSubmit(): void {
+    const sighting: SightingDto = {
+      plateId:
+        this.plateDto?.id ??
+        (() => {
+          throw new Error('Plate id found');
+        })(),
+      isDiplomat: this.sightingForm.get('isDiplomat')?.value ?? false,
+      description: this.sightingForm.get('description')?.value ?? undefined,
+      location: this.currLocation?.coords
+        ? ConvertToGeoJSON(this.currLocation?.coords)
+        : (() => {
+            throw new Error('No location found');
+          })(),
+      srid: 4326,
+      date: new Date(),
+    };
+    console.log(sighting);
+    this.SightingClient.addSighting(sighting).subscribe({
+      next: (sighting: SightingDto) => {
+        console.log(sighting);
+      },
+      error: error => {
+        console.error(error);
+      },
+    });
   }
 }
