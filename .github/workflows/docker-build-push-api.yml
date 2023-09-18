@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'Backend/CarGame.Api/**'
+      - 'Backend/**'
       - '.github/workflows/docker-build-push-api.yml'
 
 env:
