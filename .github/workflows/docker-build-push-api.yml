@@ -31,6 +31,6 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
-        file: Backend/CarGame.Api/Dockerfile
+        file: Backend/Dockerfile
         push: true
         tags: ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:latest
