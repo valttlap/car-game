@@ -21,6 +21,7 @@ public class SightingDto
 
     [Required]
     public string Location { get; set; } = null!;
+    public int SRID { get; set; } = 3067;
 }
 
 public class DiplomatNumberValidationAttribute : ValidationAttribute
@@ -44,7 +45,7 @@ public class DiplomatNumberValidationAttribute : ValidationAttribute
             }
         }
 
-        return ValidationResult.Success ?? new ValidationResult(string.Empty);
+        return ValidationResult.Success;
     }
 
 }
