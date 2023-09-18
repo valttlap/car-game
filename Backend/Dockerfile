@@ -6,8 +6,8 @@ EXPOSE 80
 # Use the SDK image to build the app
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["CarGame.Api/CarGame.Api.csproj", "CarGame.Api/"]
-COPY ["CarGame.Model/CarGame.Model.csproj", "CarGame.Model/"]
+COPY ["Backend/CarGame.Api/CarGame.Api.csproj", "CarGame.Api/"]
+COPY ["Backend/CarGame.Model/CarGame.Model.csproj", "CarGame.Model/"]
 RUN dotnet restore "CarGame.Api/CarGame.Api.csproj"
 COPY . .
 WORKDIR "/src/CarGame.Api"
