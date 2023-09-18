@@ -5,9 +5,10 @@ import {
   SightingDto,
 } from './../../services/api';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Observable, map, of, startWith, switchMap, take } from 'rxjs';
 import { ConvertToGeoJSON } from 'src/app/helpers/convert-to-geojson';
+import { ToastService } from 'src/app/services/toast.service';
 import { PlateIdExistsValidatorService } from 'src/app/validators/plate-id-exists-validator.service';
 @Component({
   selector: 'app-sighting',
@@ -39,7 +40,8 @@ export class SightingComponent implements OnInit {
   constructor(
     private SightingClient: SightingClient,
     private plateClient: PlateClient,
-    private plateIdExistsValidatorService: PlateIdExistsValidatorService
+    private plateIdExistsValidatorService: PlateIdExistsValidatorService,
+    private toastService: ToastService
   ) {
     type PlateIdValue = string | PlateDto | null;
 
@@ -85,10 +87,15 @@ export class SightingComponent implements OnInit {
           )
         )
       )
-      .subscribe(selectedPlate => {
-        if (selectedPlate) {
-          this.plateDto = selectedPlate;
-        }
+      .subscribe({
+        next: selectedPlate => {
+          if (selectedPlate) {
+            this.plateDto = selectedPlate;
+          }
+        },
+        error: error => {
+          this.toastService.showError(error);
+        },
       });
   }
 
@@ -102,39 +109,45 @@ export class SightingComponent implements OnInit {
         (position: GeolocationPosition) => {
           this.currLocation = position;
         },
-        (error: GeolocationPositionError) => console.error(error),
+        (error: GeolocationPositionError) =>
+          this.toastService.showError(error.message),
         this.positionOptions
       );
     } else {
-      console.log('No support for geolocation');
+      this.toastService.showError('No support for geolocation');
     }
   }
 
   onSubmit(): void {
-    const sighting: SightingDto = {
-      plateId:
-        this.plateDto?.id ??
-        (() => {
-          throw new Error('Plate id found');
-        })(),
-      isDiplomat: this.sightingForm.get('isDiplomat')?.value ?? false,
-      description: this.sightingForm.get('description')?.value ?? undefined,
-      location: this.currLocation?.coords
-        ? ConvertToGeoJSON(this.currLocation?.coords)
-        : (() => {
-            throw new Error('No location found');
+    try {
+      const sighting: SightingDto = {
+        plateId:
+          this.plateDto?.id ??
+          (() => {
+            throw new Error('Plate id found');
           })(),
-      srid: 4326,
-      date: new Date(),
-    };
-    console.log(sighting);
-    this.SightingClient.addSighting(sighting).subscribe({
-      next: (sighting: SightingDto) => {
-        console.log(sighting);
-      },
-      error: error => {
-        console.error(error);
-      },
-    });
+        isDiplomat: this.sightingForm.get('isDiplomat')?.value ?? false,
+        description: this.sightingForm.get('description')?.value ?? undefined,
+        location: this.currLocation?.coords
+          ? ConvertToGeoJSON(this.currLocation?.coords)
+          : (() => {
+              throw new Error('No location found');
+            })(),
+        srid: 4326,
+        date: new Date(),
+      };
+      console.log(sighting);
+      this.SightingClient.addSighting(sighting).subscribe({
+        next: (sighting: SightingDto) => {
+          console.log(sighting);
+        },
+        error: error => {
+          this.toastService.showError(error);
+        },
+      });
+    } catch (error) {
+      if (error instanceof Error) this.toastService.showError(error.message);
+      return;
+    }
   }
 }

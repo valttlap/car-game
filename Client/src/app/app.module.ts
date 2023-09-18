@@ -10,6 +10,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatOptionModule } from '@angular/material/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastContainerComponent } from './toast-container/toast-container.component';
 
 @NgModule({
   declarations: [AppComponent, SightingComponent],
@@ -23,6 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatOptionModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    ToastContainerComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],
