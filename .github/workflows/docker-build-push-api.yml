@@ -1,0 +1,36 @@
+name: Docker Build and Push
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Backend/CarGame.Api/**'
+      - '.github/workflows/docker-build-push-api.yml'
+
+env:
+  REGISTRY_NAME: cargame.azurecr.io
+  IMAGE_NAME: cargame-api
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Login to Azure Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ${{ env.REGISTRY_NAME }}
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: Backend/CarGame.Api/Dockerfile
+        push: true
+        tags: ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:latest
