@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'Backend/CarGame.Api/**'
+      - '.github/workflows/main_car-game-api-build-publish.yml'
   workflow_dispatch:
 
 jobs:
