@@ -10,7 +10,6 @@ import { AuthService } from '@auth0/auth0-angular';
 import { Observable, map, of, startWith, switchMap, take } from 'rxjs';
 import { ConvertToGeoJSON } from 'src/app/helpers/convert-to-geojson';
 import { ToastService } from 'src/app/services/toast.service';
-import { PlateIdExistsValidatorService } from 'src/app/validators/plate-id-exists-validator.service';
 @Component({
   selector: 'app-sighting',
   templateUrl: './sighting.component.html',

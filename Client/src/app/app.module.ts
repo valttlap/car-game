@@ -13,9 +13,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastContainerComponent } from './toast-container/toast-container.component';
 import { environment as env } from '../environments/environment';
 import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
-  declarations: [AppComponent, SightingComponent],
+  declarations: [AppComponent, SightingComponent, MapComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
