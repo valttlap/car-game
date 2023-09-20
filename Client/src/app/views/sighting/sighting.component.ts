@@ -131,15 +131,14 @@ export class SightingComponent implements OnInit {
         location: this.currLocation?.coords
           ? ConvertToGeoJSON(this.currLocation?.coords)
           : (() => {
-              throw new Error('No location found');
-            })(),
+            throw new Error('No location found');
+          })(),
         srid: 4326,
         date: new Date(),
       };
-      console.log(sighting);
       this.SightingClient.addSighting(sighting).subscribe({
         next: (sighting: SightingDto) => {
-          console.log(sighting);
+          this.toastService.showSuccess('Havainto lisätty!');
         },
         error: error => {
           this.toastService.showError(error);
