@@ -14,6 +14,7 @@ import { ToastContainerComponent } from './toast-container/toast-container.compo
 import { environment as env } from '../environments/environment';
 import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
 import { MapComponent } from './map/map.component';
+import { API_BASE_URL } from './services/api';
 
 @NgModule({
   declarations: [AppComponent, SightingComponent, MapComponent],
@@ -38,7 +39,8 @@ import { MapComponent } from './map/map.component';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
+    { provide: API_BASE_URL, useValue: env.api.apiUrl }
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

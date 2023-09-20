@@ -32,7 +32,6 @@ const envConfigFile = `export const environment = {
     },
     api: {
       apiUrl: '${process.env['API_SERVER_URL']}',
-      hubUrl: '${process.env['HUB_SERVER_URL']}',
     },
     recaptcha: {
       siteKey: '${process.env['RECAPTCHA_SITE_KEY']}',
