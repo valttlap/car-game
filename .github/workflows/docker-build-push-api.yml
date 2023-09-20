@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'Backend/CarGame.Api/**'
+      - 'Backend/**'
       - '.github/workflows/docker-build-push-api.yml'
 
 env:
@@ -30,7 +30,6 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
       with:
-        context: .
-        file: Backend/Dockerfile
+        context: Backend
         push: true
         tags: ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:latest
