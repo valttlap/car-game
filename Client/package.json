@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "env": "ts-node set-env.ts",
+    "start": "npm run env && ng serve",
+    "build": "npm run env && ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint"
@@ -21,9 +22,13 @@
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
+    "@auth0/angular-jwt": "^5.1.2",
+    "@auth0/auth0-angular": "^2.2.1",
     "@ng-bootstrap/ng-bootstrap": "^15.1.1",
     "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.2.3",
+    "dotenv": "^16.3.1",
+    "ol": "^8.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
@@ -38,6 +43,7 @@
     "@angular/cli": "~16.2.1",
     "@angular/compiler-cli": "^16.2.0",
     "@angular/localize": "^16.2.0",
+    "@types/dotenv": "^8.2.0",
     "@types/jasmine": "~4.3.0",
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",
@@ -52,6 +58,7 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "prettier": "^3.0.3",
     "prettier-eslint": "^15.0.1",
+    "ts-node": "^10.9.1",
     "typescript": "~5.1.3"
   }
 }

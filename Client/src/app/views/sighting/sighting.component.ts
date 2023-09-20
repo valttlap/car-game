@@ -6,10 +6,10 @@ import {
 } from './../../services/api';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { AuthService } from '@auth0/auth0-angular';
 import { Observable, map, of, startWith, switchMap, take } from 'rxjs';
 import { ConvertToGeoJSON } from 'src/app/helpers/convert-to-geojson';
 import { ToastService } from 'src/app/services/toast.service';
-import { PlateIdExistsValidatorService } from 'src/app/validators/plate-id-exists-validator.service';
 @Component({
   selector: 'app-sighting',
   templateUrl: './sighting.component.html',
@@ -40,8 +40,8 @@ export class SightingComponent implements OnInit {
   constructor(
     private SightingClient: SightingClient,
     private plateClient: PlateClient,
-    private plateIdExistsValidatorService: PlateIdExistsValidatorService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    public auth: AuthService
   ) {
     type PlateIdValue = string | PlateDto | null;
 
