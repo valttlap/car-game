@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddConfigurationsServices(builder.Configuration);
 builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddIdentityServices(builder.Environment, builder.Configuration);
 
 var connStringBuilder = new NpgsqlConnectionStringBuilder(
     builder.Configuration.GetConnectionString("DefaultConnection"));
