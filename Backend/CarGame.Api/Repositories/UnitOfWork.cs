@@ -10,15 +10,17 @@ namespace CarGame.Api.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly CarGameContext _context;
+    private readonly IMapper _mapper;
 
     public UnitOfWork(CarGameContext context, IMapper mapper)
     {
+        _mapper = mapper;
         _context = context;
     }
 
     public IPlateRepository PlateRepository => new PlateRepository(_context);
 
-    public ISightingRepository SightingRepository => new SightingRepository(_context);
+    public ISightingRepository SightingRepository => new SightingRepository(_context, _mapper);
 
     public async Task<bool> Complete()
     {

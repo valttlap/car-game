@@ -1,6 +1,9 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using CarGame.Api.DTOs;
 using CarGame.Api.Exceptions;
 using CarGame.Api.Interfaces;
 using CarGame.Model.Models;
@@ -11,9 +14,11 @@ namespace CarGame.Api.Repositories
     public class SightingRepository : ISightingRepository
     {
         private readonly CarGameContext _context;
+        private readonly IMapper _mapper;
 
-        public SightingRepository(CarGameContext context)
+        public SightingRepository(CarGameContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -38,9 +43,12 @@ namespace CarGame.Api.Repositories
             return await _context.Sightings.FindAsync(id).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<Sighting>> GetSightingsAsync()
+        public async Task<IEnumerable<SightingUserDto>> GetSightingsAsync()
         {
-            return await _context.Sightings.ToListAsync().ConfigureAwait(false);
+            return await _context.Sightings
+                                 .ProjectTo<SightingUserDto>(_mapper.ConfigurationProvider)
+                                 .ToListAsync()
+                                 .ConfigureAwait(false);
         }
 
         private async Task<bool> IsAlreadySeen(Sighting sighting)

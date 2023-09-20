@@ -26,12 +26,11 @@ namespace CarGame.Api.Controllers
 
         [HttpGet]
         [OpenApiOperation("GetSightings", "Retrieves all sightings.")]
-        [ProducesResponseType(typeof(IEnumerable<SightingDto>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<SightingUserDto>), 200)]
         public async Task<ActionResult<IEnumerable<SightingDto>>> GetSightings()
         {
             var sightings = await _unitOfWork.SightingRepository.GetSightingsAsync().ConfigureAwait(false);
-            var sightingsDto = _mapper.Map<IEnumerable<SightingDto>>(sightings);
-            return Ok(sightingsDto);
+            return Ok(sightings);
         }
 
         [HttpGet("{id}")]

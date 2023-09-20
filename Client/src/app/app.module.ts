@@ -15,9 +15,10 @@ import { environment as env } from '../environments/environment';
 import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
 import { MapComponent } from './map/map.component';
 import { API_BASE_URL } from './services/api';
+import { SortHeaderDirective } from './dirctives/sort-header.directive';
 
 @NgModule({
-  declarations: [AppComponent, SightingComponent, MapComponent],
+  declarations: [AppComponent, SightingComponent, MapComponent, SortHeaderDirective],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -39,8 +40,8 @@ import { API_BASE_URL } from './services/api';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
-    { provide: API_BASE_URL, useValue: env.api.apiUrl }
+    { provide: API_BASE_URL, useValue: env.api.apiUrl },
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

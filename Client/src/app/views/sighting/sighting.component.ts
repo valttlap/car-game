@@ -3,13 +3,22 @@ import {
   PlateClient,
   PlateDto,
   SightingDto,
+  SightingUserDto,
 } from './../../services/api';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '@auth0/auth0-angular';
 import { Observable, map, of, startWith, switchMap, take } from 'rxjs';
+import {
+  SortEvent,
+  SortHeaderDirective,
+} from 'src/app/dirctives/sort-header.directive';
 import { ConvertToGeoJSON } from 'src/app/helpers/convert-to-geojson';
 import { ToastService } from 'src/app/services/toast.service';
+
+const compare = (v1: string | Date, v2: string | Date) =>
+  v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
+
 @Component({
   selector: 'app-sighting',
   templateUrl: './sighting.component.html',
@@ -18,6 +27,13 @@ import { ToastService } from 'src/app/services/toast.service';
 export class SightingComponent implements OnInit {
   private _currLocation?: GeolocationPosition;
   private _plateDto?: PlateDto;
+
+  active = 1;
+
+  sightings: SightingUserDto[] = [];
+
+  @ViewChildren(SortHeaderDirective)
+  headers?: QueryList<SortHeaderDirective>;
 
   watcherId?: number;
   // navigator.geolocation.clearWatch(this.watcherId);
@@ -101,6 +117,7 @@ export class SightingComponent implements OnInit {
 
   ngOnInit(): void {
     this.getLocation();
+    this.getSightings();
   }
 
   getLocation(): void {
@@ -118,6 +135,45 @@ export class SightingComponent implements OnInit {
     }
   }
 
+  getSightings(): void {
+    this.SightingClient.getSightings().subscribe({
+      next: sightings => {
+        this.sightings = sightings;
+      },
+      error: error => {
+        this.toastService.showError(error);
+      },
+    });
+  }
+
+  onSort({ column, direction }: SortEvent) {
+    // resetting other headers
+    this.headers?.forEach(header => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
+    });
+
+    // sorting countries
+    if (direction === '' || column === '') {
+      this.getSightings();
+    } else {
+      let res: 1 | 0 | -1;
+      this.sightings = [...this.sightings].sort((a, b) => {
+        switch (column) {
+          case 'country':
+            res = compare(a.country, b.country);
+            return direction === 'asc' ? res : -res;
+          case 'date':
+            res = compare(a.date, b.date);
+            return direction === 'asc' ? res : -res;
+          default:
+            return 0;
+        }
+      });
+    }
+  }
+
   onSubmit(): void {
     try {
       const sighting: SightingDto = {
@@ -131,14 +187,16 @@ export class SightingComponent implements OnInit {
         location: this.currLocation?.coords
           ? ConvertToGeoJSON(this.currLocation?.coords)
           : (() => {
-            throw new Error('No location found');
-          })(),
+              throw new Error('No location found');
+            })(),
         srid: 4326,
         date: new Date(),
       };
       this.SightingClient.addSighting(sighting).subscribe({
-        next: (sighting: SightingDto) => {
+        next: () => {
           this.toastService.showSuccess('Havainto lisätty!');
+          this.sightingForm.reset();
+          this.getSightings();
         },
         error: error => {
           this.toastService.showError(error);

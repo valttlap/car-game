@@ -244,7 +244,7 @@ export class PlateClient {
      * @param abbr (optional) 
      * @param isDiplomat (optional) 
      */
-    findPlatesByAbbr(abbr: string | null | undefined, isDiplomat: boolean | null | undefined, httpContext?: HttpContext): Observable<PlateDto[]> {
+    findPlatesByAbbr(abbr?: string | null | undefined, isDiplomat?: boolean | null | undefined, httpContext?: HttpContext): Observable<PlateDto[]> {
         let url_ = this.baseUrl + "/api/Plate/search?";
         if (abbr !== undefined && abbr !== null)
             url_ += "abbr=" + encodeURIComponent("" + abbr) + "&";
@@ -313,7 +313,7 @@ export class SightingClient {
     /**
      * GetSightings
      */
-    getSightings(httpContext?: HttpContext): Observable<SightingDto[]> {
+    getSightings(httpContext?: HttpContext): Observable<SightingUserDto[]> {
         let url_ = this.baseUrl + "/api/Sighting";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -333,14 +333,14 @@ export class SightingClient {
                 try {
                     return this.processGetSightings(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<SightingDto[]>;
+                    return _observableThrow(e) as any as Observable<SightingUserDto[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<SightingDto[]>;
+                return _observableThrow(response_) as any as Observable<SightingUserDto[]>;
         }));
     }
 
-    protected processGetSightings(response: HttpResponseBase): Observable<SightingDto[]> {
+    protected processGetSightings(response: HttpResponseBase): Observable<SightingUserDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -350,7 +350,7 @@ export class SightingClient {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as SightingDto[];
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as SightingUserDto[];
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -489,6 +489,16 @@ export interface PlateDto {
     countryAbbreviation?: string | undefined;
     diplomatCode?: number | undefined;
     isDiplomat: boolean;
+}
+
+export interface SightingUserDto {
+    country: string;
+    description?: string | undefined;
+    date: Date;
+    location: string;
+    srid: number;
+    isDiplomat: boolean;
+    diplomatNumber?: number | undefined;
 }
 
 export interface SightingDto {

@@ -19,6 +19,12 @@ public class AutoMapperProfiles : Profile
             .ReverseMap()
             .ForMember(dest => dest.Location, opts => opts.MapFrom(src => GeoJsonToGeometry(src.Location, src.SRID)));
         CreateMap<Plate, PlateDto>().ReverseMap();
+        CreateMap<Sighting, SightingUserDto>()
+            .ForMember(dest => dest.Location, opts => opts.MapFrom(src => GeometryToGeoJson(src.Location)))
+            .ForMember(dest => dest.Country, opts => opts.MapFrom(src => src.Plate.Country))
+            .ForMember(dest => dest.SRID, opts => opts.MapFrom(src => src.Location.SRID))
+            .ForMember(dest => dest.IsDiplomat, opts => opts.MapFrom(src => src.IsDiplomat))
+            .ForMember(dest => dest.DiplomatNumber, opts => opts.MapFrom(src => src.DiplomatNumber));
     }
 
     private static string? GeometryToGeoJson(Geometry geometry)
