@@ -17,6 +17,7 @@ import Polygon from 'ol/geom/Polygon';
 import Point from 'ol/geom/Point';
 import { Vector as VectorSource } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
+import { Circle } from 'ol/geom';
 
 @Component({
   selector: 'app-map',
@@ -66,17 +67,8 @@ export class MapComponent implements AfterViewInit, OnChanges {
     ]);
     this.map.getView().animate({ center: coords, zoom: 12 });
 
-    // Create a circular polygon to represent the accuracy
-    const accuracyFeature = new Feature(
-      new Polygon([
-        Array.from({ length: 64 }, (_, i) => [
-          position.coords.longitude +
-            position.coords.accuracy * Math.cos((2 * Math.PI * i) / 64),
-          position.coords.latitude +
-            position.coords.accuracy * Math.sin((2 * Math.PI * i) / 64),
-        ]).map(coord => fromLonLat(coord)),
-      ])
-    );
+    const circleGeom = new Circle(coords, position.coords.accuracy);
+    const accuracyFeature = new Feature(circleGeom);
 
     const positionFeature = new Feature(new Point(coords));
     positionFeature.setStyle(
