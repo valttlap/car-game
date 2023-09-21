@@ -4,6 +4,7 @@ import {
   OnChanges,
   SimpleChanges,
   Input,
+  AfterViewInit,
 } from '@angular/core';
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -22,12 +23,12 @@ import { Vector as VectorLayer } from 'ol/layer';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent implements OnInit, OnChanges {
+export class MapComponent implements AfterViewInit, OnChanges {
   @Input() currLocation?: GeolocationPosition;
   map!: Map;
   vectorSource!: VectorSource;
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.vectorSource = new VectorSource();
 
     this.map = new Map({
@@ -45,9 +46,11 @@ export class MapComponent implements OnInit, OnChanges {
         zoom: 2,
       }),
     });
+    this.updateLocation(this.currLocation);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (!this.map) return;
     if (changes['currLocation'] && changes['currLocation'].currentValue) {
       this.updateLocation(this.currLocation);
     }
