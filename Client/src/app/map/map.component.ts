@@ -4,6 +4,7 @@ import {
   OnChanges,
   SimpleChanges,
   Input,
+  AfterViewInit,
 } from '@angular/core';
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -16,18 +17,19 @@ import Polygon from 'ol/geom/Polygon';
 import Point from 'ol/geom/Point';
 import { Vector as VectorSource } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
+import { Circle } from 'ol/geom';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent implements OnInit, OnChanges {
+export class MapComponent implements AfterViewInit, OnChanges {
   @Input() currLocation?: GeolocationPosition;
   map!: Map;
   vectorSource!: VectorSource;
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this.vectorSource = new VectorSource();
 
     this.map = new Map({
@@ -45,9 +47,11 @@ export class MapComponent implements OnInit, OnChanges {
         zoom: 2,
       }),
     });
+    this.updateLocation(this.currLocation);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (!this.map) return;
     if (changes['currLocation'] && changes['currLocation'].currentValue) {
       this.updateLocation(this.currLocation);
     }
@@ -63,17 +67,8 @@ export class MapComponent implements OnInit, OnChanges {
     ]);
     this.map.getView().animate({ center: coords, zoom: 12 });
 
-    // Create a circular polygon to represent the accuracy
-    const accuracyFeature = new Feature(
-      new Polygon([
-        Array.from({ length: 64 }, (_, i) => [
-          position.coords.longitude +
-            position.coords.accuracy * Math.cos((2 * Math.PI * i) / 64),
-          position.coords.latitude +
-            position.coords.accuracy * Math.sin((2 * Math.PI * i) / 64),
-        ]).map(coord => fromLonLat(coord)),
-      ])
-    );
+    const circleGeom = new Circle(coords, position.coords.accuracy);
+    const accuracyFeature = new Feature(circleGeom);
 
     const positionFeature = new Feature(new Point(coords));
     positionFeature.setStyle(
