@@ -11,4 +11,5 @@ public interface ISightingRepository
     public Task<IEnumerable<SightingUserDto>> GetSightingsAsync();
     public Task<Sighting?> GetSightingByIdAsync(int id);
     public Task AddSighting(Sighting sighting);
+    public Task DeleteSighting(int id);
 }

@@ -79,5 +79,28 @@ namespace CarGame.Api.Controllers
             await _unitOfWork.Complete().ConfigureAwait(false);
             return Ok(sightingDto);
         }
+
+        [HttpDelete("{id}")]
+        [OpenApiOperation("DeleteSighting", "Deletes a sighting from the database.")]
+        [ProducesResponseType(typeof(void), 201)]
+        [ProducesResponseType(typeof(void), 404)]
+        [ProducesResponseType(typeof(void), 500)]
+        public async Task<ActionResult> DeleteSighting(int id)
+        {
+            try
+            {
+                await _unitOfWork.SightingRepository.DeleteSighting(id).ConfigureAwait(false);
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch
+            {
+                return StatusCode(500, "An error occurred while deleting the sighting.");
+            }
+            await _unitOfWork.Complete().ConfigureAwait(false);
+            return NoContent();
+        }
     }
 }

@@ -38,6 +38,12 @@ namespace CarGame.Api.Repositories
             _context.Sightings.Add(sighting);
         }
 
+        public async Task DeleteSighting(int id)
+        {
+            var sighting = await _context.Sightings.FindAsync(id).ConfigureAwait(false) ?? throw new NotFoundException();
+            _context.Sightings.Remove(sighting);
+        }
+
         public async Task<Sighting?> GetSightingByIdAsync(int id)
         {
             return await _context.Sightings.FindAsync(id).ConfigureAwait(false);
