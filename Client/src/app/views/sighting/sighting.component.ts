@@ -5,9 +5,17 @@ import {
   SightingDto,
   SightingUserDto,
 } from './../../services/api';
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  QueryList,
+  TemplateRef,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AuthService } from '@auth0/auth0-angular';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, map, of, startWith, switchMap, take } from 'rxjs';
 import {
   SortEvent,
@@ -35,6 +43,8 @@ export class SightingComponent implements OnInit {
   @ViewChildren(SortHeaderDirective)
   headers?: QueryList<SortHeaderDirective>;
 
+  @ViewChild('content') content?: TemplateRef<unknown>;
+
   watcherId?: number;
   // navigator.geolocation.clearWatch(this.watcherId);
 
@@ -57,7 +67,8 @@ export class SightingComponent implements OnInit {
     private SightingClient: SightingClient,
     private plateClient: PlateClient,
     private toastService: ToastService,
-    public auth: AuthService
+    public auth: AuthService,
+    private modalService: NgbModal
   ) {
     type PlateIdValue = string | PlateDto | null;
 
@@ -206,5 +217,25 @@ export class SightingComponent implements OnInit {
       if (error instanceof Error) this.toastService.showError(error.message);
       return;
     }
+  }
+
+  deleteSighting(id: number): void {
+    this.modalService
+      .open(this.content, {
+        ariaLabelledBy: 'modal-basic-title',
+      })
+      .result.then(result => {
+        if (result) {
+          this.SightingClient.deleteSighting(id).subscribe({
+            next: () => {
+              this.toastService.showSuccess('Havainto poistettu!');
+              this.getSightings();
+            },
+            error: error => {
+              this.toastService.showError(error);
+            },
+          });
+        }
+      });
   }
 }
