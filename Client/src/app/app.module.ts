@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SightingComponent } from './views/sighting/sighting.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatOptionModule } from '@angular/material/core';
@@ -13,12 +12,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastContainerComponent } from './toast-container/toast-container.component';
 import { environment as env } from '../environments/environment';
 import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
-import { MapComponent } from './map/map.component';
 import { API_BASE_URL } from './services/api';
 import { SortHeaderDirective } from './dirctives/sort-header.directive';
+import { MapViewComponent } from './map-view/map-view.component';
+import { AddSightingComponent } from './views/add-sighting/add-sighting.component';
+import { ListSightingsComponent } from './views/list-sightings/list-sightings.component';
+import { MainComponent } from './main/main.component';
 
 @NgModule({
-  declarations: [AppComponent, SightingComponent, MapComponent, SortHeaderDirective],
+  declarations: [
+    AppComponent,
+    SortHeaderDirective,
+    MapViewComponent,
+    AddSightingComponent,
+    ListSightingsComponent,
+    MainComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

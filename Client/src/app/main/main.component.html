@@ -1,0 +1,17 @@
+<div class="container mt-3">
+  <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+    <li [ngbNavItem]="1">
+      <button ngbNavLink>Uusi</button>
+      <ng-template ngbNavContent>
+        <app-add-sighting></app-add-sighting>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2">
+      <button ngbNavLink>Havainnot</button>
+      <ng-template ngbNavContent>
+        <app-list-sightings></app-list-sightings>
+      </ng-template>
+    </li>
+  </ul>
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+</div>
