@@ -12,6 +12,12 @@
         <app-list-sightings></app-list-sightings>
       </ng-template>
     </li>
+    <li [ngbNavItem]="3">
+      <button ngbNavLink>Kartta</button>
+      <ng-template ngbNavContent>
+        <app-sightings-map></app-sightings-map>
+      </ng-template>
+    </li>
   </ul>
   <div [ngbNavOutlet]="nav" class="mt-2"></div>
 </div>

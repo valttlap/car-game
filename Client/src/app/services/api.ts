@@ -554,6 +554,7 @@ export interface PlateDto {
 export interface SightingUserDto {
     id: number;
     country: string;
+    countryCode: string;
     description?: string | undefined;
     date: Date;
     location: string;

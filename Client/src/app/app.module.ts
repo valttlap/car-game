@@ -18,6 +18,7 @@ import { MapViewComponent } from './map-view/map-view.component';
 import { AddSightingComponent } from './views/add-sighting/add-sighting.component';
 import { ListSightingsComponent } from './views/list-sightings/list-sightings.component';
 import { MainComponent } from './main/main.component';
+import { SightingsMapComponent } from './views/sightings-map/sightings-map.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { MainComponent } from './main/main.component';
     AddSightingComponent,
     ListSightingsComponent,
     MainComponent,
+    SightingsMapComponent,
   ],
   imports: [
     BrowserModule,
