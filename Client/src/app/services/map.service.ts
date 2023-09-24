@@ -7,10 +7,13 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import Point from 'ol/geom/Point';
 import Feature from 'ol/Feature';
-import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
+import { Circle as CircleStyle, Fill, Icon, Stroke, Style } from 'ol/style';
 import { Circle, Geometry } from 'ol/geom';
 import GeoJSON from 'ol/format/GeoJSON';
 import { transform } from 'ol/proj';
+import { SightingUserDto } from './api';
+import proj4 from 'proj4';
+import { register } from 'ol/proj/proj4';
 
 @Injectable({
   providedIn: 'root',
@@ -99,14 +102,55 @@ export class MapService {
     this.map?.getView().setZoom(15);
   }
 
-  updatePointsFromDatabase(geoJsonData: unknown) {
+  updatePointsFromDatabase(data: SightingUserDto[]) {
+    proj4.defs(
+      'EPSG:3067',
+      '+proj=utm +zone=35 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs'
+    );
+    register(proj4);
     const geoJsonFormat = new GeoJSON();
-    const features = geoJsonFormat.readFeatures(geoJsonData);
+    const features: Feature[] = [];
+
+    data.forEach(item => {
+      // Parse the location string to get the GeoJSON object
+      const geoJsonObj = JSON.parse(item.location);
+
+      // Read the feature from the GeoJSON object
+      const feature = geoJsonFormat.readFeature(geoJsonObj);
+      // Transform the coordinates from the given srid to 'EPSG:3857'
+      debugger;
+      feature.getGeometry()?.transform(`EPSG:${item.srid}`, 'EPSG:3857');
+
+      // Set the countryCode property on the feature
+      feature.set('countryCode', item.countryCode);
+
+      features.push(feature);
+    });
+
+    // Clear the existing features and add the new ones
     this.pointsLayer?.getSource()?.clear();
     this.pointsLayer?.getSource()?.addFeatures(features);
+
+    // Update the style function for the pointsLayer
+    this.pointsLayer?.setStyle(feature => {
+      const countryCode = feature.get('countryCode');
+      const flagPath = `assets/country_flags/${countryCode}.svg`;
+
+      return new Style({
+        image: new Icon({
+          src: flagPath,
+          scale: 0.5, // Adjust the scale as needed
+        }),
+      });
+    });
   }
 
   getMap(): Map | undefined {
     return this.map;
+  }
+
+  deleteAll(): void {
+    this.pointsLayer?.getSource()?.clear();
+    this.userPositionLayer?.getSource()?.clear();
   }
 }

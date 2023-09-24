@@ -548,11 +548,13 @@ export interface PlateDto {
     countryAbbreviation?: string | undefined;
     diplomatCode?: number | undefined;
     isDiplomat: boolean;
+    countryCode: string;
 }
 
 export interface SightingUserDto {
     id: number;
     country: string;
+    countryCode: string;
     description?: string | undefined;
     date: Date;
     location: string;

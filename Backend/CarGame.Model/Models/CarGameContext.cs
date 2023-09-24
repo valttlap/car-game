@@ -33,6 +33,9 @@ public partial class CarGameContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Country).HasColumnName("country");
             entity.Property(e => e.CountryAbbreviation).HasColumnName("country_abbreviation");
+            entity.Property(e => e.CountryCode)
+                .HasMaxLength(2)
+                .HasColumnName("country_code");
             entity.Property(e => e.DiplomatCode).HasColumnName("diplomat_code");
             entity.Property(e => e.IsDiplomat).HasColumnName("is_diplomat");
         });

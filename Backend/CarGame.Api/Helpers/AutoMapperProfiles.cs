@@ -23,6 +23,7 @@ public class AutoMapperProfiles : Profile
             .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Id))
             .ForMember(dest => dest.Location, opts => opts.MapFrom(src => GeometryToGeoJson(src.Location)))
             .ForMember(dest => dest.Country, opts => opts.MapFrom(src => src.Plate.Country))
+            .ForMember(dest => dest.CountryCode, opts => opts.MapFrom(src => src.Plate.CountryCode))
             .ForMember(dest => dest.SRID, opts => opts.MapFrom(src => src.Location.SRID))
             .ForMember(dest => dest.IsDiplomat, opts => opts.MapFrom(src => src.IsDiplomat))
             .ForMember(dest => dest.DiplomatNumber, opts => opts.MapFrom(src => src.DiplomatNumber));

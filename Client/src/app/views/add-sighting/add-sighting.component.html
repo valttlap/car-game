@@ -21,6 +21,7 @@
           type="text"
           id="plate-id"
           formControlName="plateId"
+          autocomplete="off"
           class="form-control"
           list="plateIdOptions"
           placeholder="Kirjoita etsiäksesi..."
@@ -38,6 +39,15 @@
         </datalist>
       </div>
     </div>
+    <div *ngIf="plateDto" class="row mb-3">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-10">
+        <span
+          class="me-2 fi"
+          [class]="'fi-' + plateDto.countryCode.toLowerCase()"></span>
+        <span>{{ plateDto.country }}</span>
+      </div>
+    </div>
     <div *ngIf="isDiplomat.checked" class="row mb-3">
       <label class="col-sm-2 col-form-label" for="diplomat-number"
         >Diplomaatin tunnus</label
@@ -47,6 +57,7 @@
           id="diplomat-number"
           type="number"
           formControlName="diplomatNumber"
+          autocomplete="off"
           min="1"
           max="99"
           class="form-control" />
@@ -58,6 +69,7 @@
         <textarea
           name=""
           id="description"
+          autocomplete="off"
           cols="30"
           rows="3"
           formControlName="description"
@@ -70,26 +82,3 @@
     <button class="btn btn-primary" type="submit">Tallenna</button>
   </form>
 </div>
-
-<ng-template #content let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Poista havainto</h4>
-    <button
-      class="btn-close"
-      aria-label="Close"
-      (click)="modal.dismiss(false)"></button>
-  </div>
-  <div class="modal-body">
-    <p><strong>Haluatko varasti poistaa havainnon?</strong></p>
-    <p>
-      Jos poistat havainnon, se poistuu pysyvästi.
-      <span class="text-danger">Tätä toimintoa ei voi peruuttaa.</span>
-    </p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-outline-secondary" (click)="modal.dismiss(false)">
-      Peruuta
-    </button>
-    <button class="btn btn-danger" (click)="modal.close(true)">Poista</button>
-  </div>
-</ng-template>

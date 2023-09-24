@@ -14,4 +14,6 @@ public class PlateDto
     public int? DiplomatCode { get; set; }
 
     public bool IsDiplomat { get; set; }
+
+    public string CountryCode { get; set; } = null!;
 }

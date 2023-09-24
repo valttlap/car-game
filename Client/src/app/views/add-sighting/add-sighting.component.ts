@@ -63,6 +63,7 @@ export class AddSightingComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.watcherId && navigator.geolocation.clearWatch(this.watcherId);
+    this.mapService.deleteAll();
   }
 
   ngOnInit(): void {
