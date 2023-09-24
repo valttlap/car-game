@@ -15,5 +15,7 @@ public partial class Plate
 
     public bool IsDiplomat { get; set; }
 
+    public string CountryCode { get; set; } = null!;
+
     public virtual ICollection<Sighting> Sightings { get; set; } = new List<Sighting>();
 }
