@@ -548,6 +548,7 @@ export interface PlateDto {
     countryAbbreviation?: string | undefined;
     diplomatCode?: number | undefined;
     isDiplomat: boolean;
+    countryCode: string;
 }
 
 export interface SightingUserDto {
