@@ -118,7 +118,6 @@ export class MapService {
       // Read the feature from the GeoJSON object
       const feature = geoJsonFormat.readFeature(geoJsonObj);
       // Transform the coordinates from the given srid to 'EPSG:3857'
-      debugger;
       feature.getGeometry()?.transform(`EPSG:${item.srid}`, 'EPSG:3857');
 
       // Set the countryCode property on the feature
