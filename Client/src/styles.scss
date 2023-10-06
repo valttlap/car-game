@@ -28,3 +28,12 @@ th[sortable].asc:before {
 th[sortable].desc:before {
 	transform: rotate(180deg);
 }
+
+.flag-icon {
+  width: 20px; /* Adjust as needed */
+  height: 20px;
+  border-radius: 50%; /* Makes it circular */
+  overflow: hidden; /* Clips the content outside the circle */
+  background-size: cover;
+}
+

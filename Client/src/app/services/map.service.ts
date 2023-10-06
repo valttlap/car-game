@@ -120,8 +120,13 @@ export class MapService {
       // Transform the coordinates from the given srid to 'EPSG:3857'
       feature.getGeometry()?.transform(`EPSG:${item.srid}`, 'EPSG:3857');
 
-      // Set the countryCode property on the feature
-      feature.set('countryCode', item.countryCode);
+      feature.setProperties({
+        country: item.country,
+        description: item.description,
+        date: item.date,
+        isDiplomat: item.isDiplomat,
+        diplomatNumber: item.diplomatNumber,
+      });
 
       features.push(feature);
     });
@@ -131,14 +136,12 @@ export class MapService {
     this.pointsLayer?.getSource()?.addFeatures(features);
 
     // Update the style function for the pointsLayer
-    this.pointsLayer?.setStyle(feature => {
-      const countryCode = feature.get('countryCode');
-      const flagPath = `assets/country_flags/${countryCode}.svg`;
-
+    this.pointsLayer?.setStyle(() => {
       return new Style({
-        image: new Icon({
-          src: flagPath,
-          scale: 0.5, // Adjust the scale as needed
+        image: new CircleStyle({
+          radius: 6,
+          fill: new Fill({ color: 'red' }),
+          stroke: new Stroke({ color: 'white', width: 2 }),
         }),
       });
     });
