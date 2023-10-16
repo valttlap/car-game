@@ -11,6 +11,7 @@
     <EmbeddedResource Include="scripts\001_init.sql" />
     <EmbeddedResource Include="scripts\002_populate_plates.sql" />
     <EmbeddedResource Include="scripts\003_add_country_codes.sql" />
+    <EmbeddedResource Include="scripts\004_add_aland_islands.sql" />
   </ItemGroup>
 
   <ItemGroup>
