@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarGame.DbUpdater", "CarGam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarGame.Model", "CarGame.Model\CarGame.Model.csproj", "{00426F24-CD6A-4630-8AEF-65755860F53C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarGame.Test", "CarGame.Test\CarGame.Test.csproj", "{CD1F3D8E-D547-4435-A896-AB643CD08C97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{00426F24-CD6A-4630-8AEF-65755860F53C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00426F24-CD6A-4630-8AEF-65755860F53C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00426F24-CD6A-4630-8AEF-65755860F53C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD1F3D8E-D547-4435-A896-AB643CD08C97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD1F3D8E-D547-4435-A896-AB643CD08C97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD1F3D8E-D547-4435-A896-AB643CD08C97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD1F3D8E-D547-4435-A896-AB643CD08C97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -126,6 +126,8 @@ export class AddSightingComponent implements OnInit, OnDestroy {
             throw new Error('Plate id found');
           })(),
         isDiplomat: this.sightingForm.get('isDiplomat')?.value ?? false,
+        diplomatNumber:
+          this.sightingForm.get('diplomatNumber')?.value ?? undefined,
         description: this.sightingForm.get('description')?.value ?? undefined,
         location: this.currentPosition?.coords
           ? ConvertToGeoJSON(this.currentPosition?.coords)
