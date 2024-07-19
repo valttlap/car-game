@@ -13,6 +13,7 @@ import { MapService } from '../services/map.service';
       }
     `,
   ],
+  standalone: true,
 })
 export class MapViewComponent implements OnInit, AfterViewInit {
   constructor(

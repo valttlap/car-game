@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { SightingClient, SightingUserDto } from 'src/app/services/api';
 import { MapService } from 'src/app/services/map.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { MapViewComponent } from '../../map-view/map-view.component';
 
 @Component({
   selector: 'app-sightings-map',
   templateUrl: './sightings-map.component.html',
   styleUrls: ['./sightings-map.component.scss'],
+  standalone: true,
+  imports: [MapViewComponent],
 })
 export class SightingsMapComponent implements OnInit {
   sightings: SightingUserDto[] = [];

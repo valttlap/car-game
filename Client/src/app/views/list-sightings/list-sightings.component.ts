@@ -13,11 +13,15 @@ import {
 } from 'src/app/dirctives/sort-header.directive';
 import { SightingClient, SightingUserDto } from 'src/app/services/api';
 import { ToastService } from 'src/app/services/toast.service';
+import { NgFor, DatePipe } from '@angular/common';
+import { SortHeaderDirective as SortHeaderDirective_1 } from '../../dirctives/sort-header.directive';
 
 @Component({
   selector: 'app-list-sightings',
   templateUrl: './list-sightings.component.html',
   styleUrls: ['./list-sightings.component.scss'],
+  standalone: true,
+  imports: [SortHeaderDirective_1, NgFor, DatePipe],
 })
 export class ListSightingsComponent implements OnInit {
   compare = (v1: string | Date, v2: string | Date) =>

@@ -7,7 +7,7 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import Point from 'ol/geom/Point';
 import Feature from 'ol/Feature';
-import { Circle as CircleStyle, Fill, Icon, Stroke, Style } from 'ol/style';
+import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
 import { Circle, Geometry } from 'ol/geom';
 import GeoJSON from 'ol/format/GeoJSON';
 import { transform } from 'ol/proj';
