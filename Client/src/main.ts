@@ -7,7 +7,6 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AppRoutingModule } from './app/app-routing.module';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { environment as env } from './environments/environment';
 import { API_BASE_URL } from './app/services/api';
@@ -17,12 +16,14 @@ import {
   withInterceptorsFromDi,
   provideHttpClient,
 } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
+import { routes } from './app/app.routes';
 
 bootstrapApplication(AppComponent, {
   providers: [
+    provideRouter(routes),
     importProvidersFrom(
       BrowserModule,
-      AppRoutingModule,
       NgbModule,
       FormsModule,
       ReactiveFormsModule,
