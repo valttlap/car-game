@@ -1,16 +1,32 @@
 import { PlateClient, SightingClient, SightingDto } from './../../services/api';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Observable, map, of, startWith, switchMap, take } from 'rxjs';
 import { ConvertToGeoJSON } from 'src/app/helpers/convert-to-geojson';
 import { PlateDto } from 'src/app/services/api';
 import { MapService } from 'src/app/services/map.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { MapViewComponent } from '../../map-view/map-view.component';
+import { NgFor, NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-add-sighting',
   templateUrl: './add-sighting.component.html',
   styleUrls: ['./add-sighting.component.scss'],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    NgFor,
+    NgIf,
+    MapViewComponent,
+    AsyncPipe,
+  ],
 })
 export class AddSightingComponent implements OnInit, OnDestroy {
   private _plateDto?: PlateDto;

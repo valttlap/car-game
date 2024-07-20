@@ -22,6 +22,7 @@ export interface SortEvent {
 
 @Directive({
   selector: '[appSortHeader]',
+  standalone: true,
 })
 export class SortHeaderDirective {
   @Input() sortable: SortColumn = '';
