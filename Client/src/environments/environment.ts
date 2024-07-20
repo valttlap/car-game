@@ -4,12 +4,12 @@ export const environment = {
     domain: 'car-game.eu.auth0.com',
     clientId: '8OUHBfuayAu0ezDia1xChO5c7BeTJtiv',
     authorizationParams: {
-      audience: 'https://car-api.valtterilappalainen.dev/',
-      redirect_uri: 'https://car.valtterilappalainen.dev',
+      audience: 'https://valtsujaviltsu.fi',
+      redirect_uri: 'https://valtsujaviltsu.fi',
     },
     errorPath: '/callback',
   },
   api: {
-    apiUrl: 'https://car-api.valtterilappalainen.dev',
+    apiUrl: 'https://valtsujaviltsu.fi',
   },
 };
