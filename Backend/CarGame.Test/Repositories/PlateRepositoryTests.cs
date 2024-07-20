@@ -45,7 +45,7 @@ public class PlateRepositoryTests : IDisposable
         var repository = new PlateRepository(_context);
 
         // Act
-        var result = await repository.GetPlatesAsync().ConfigureAwait(false);
+        var result = await repository.GetPlatesAsync();
 
         // Assert
         Assert.Equal(4, result.Count());
@@ -58,7 +58,7 @@ public class PlateRepositoryTests : IDisposable
         var repository = new PlateRepository(_context);
 
         // Act
-        var result = await repository.GetRegularPlatesAsync().ConfigureAwait(false);
+        var result = await repository.GetRegularPlatesAsync();
 
         // Assert
         Assert.Equal(2, result.Count());
@@ -72,7 +72,7 @@ public class PlateRepositoryTests : IDisposable
         var repository = new PlateRepository(_context);
 
         // Act
-        var result = await repository.GetDiplomatPlatesAsync().ConfigureAwait(false);
+        var result = await repository.GetDiplomatPlatesAsync();
 
         // Assert
         Assert.Equal(2, result.Count());
