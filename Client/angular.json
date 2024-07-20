@@ -18,7 +18,7 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": {
-              "base": "dist/client"
+              "base": "../Backend/CarGame.Api/wwwroot"
             },
             "index": "src/index.html",
             "polyfills": [
@@ -59,7 +59,14 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ],
+              "outputHashing": "media"
             }
           },
           "defaultConfiguration": "production"
