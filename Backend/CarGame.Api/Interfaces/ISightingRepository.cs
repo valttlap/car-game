@@ -9,6 +9,8 @@ namespace CarGame.Api.Interfaces;
 public interface ISightingRepository
 {
     public Task<IEnumerable<SightingUserDto>> GetSightingsAsync();
+    public Task<IEnumerable<SightingUserDto>> GetCountrySightingsAsync();
+    public Task<IEnumerable<SightingUserDto>> GetDiplomatSightingsAsync();
     public Task<Sighting?> GetSightingByIdAsync(int id);
     public Task AddSighting(Sighting sighting);
     public Task DeleteSighting(int id);

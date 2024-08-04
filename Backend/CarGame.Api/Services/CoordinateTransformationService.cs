@@ -30,10 +30,7 @@ public class CoordinateTransformationService : ICoordinateTransformationService
 
     public Point TransformTo3067(Point point)
     {
-        if (point == null)
-        {
-            throw new ArgumentNullException(nameof(point));
-        }
+        ArgumentNullException.ThrowIfNull(point);
 
         var fromPoint = new double[] { point.X, point.Y };
         var toPoint = _transformTo3067.Transform(fromPoint);

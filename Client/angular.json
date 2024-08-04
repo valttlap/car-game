@@ -22,6 +22,7 @@
             },
             "index": "src/index.html",
             "polyfills": [
+              "@angular/localize/init",
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",

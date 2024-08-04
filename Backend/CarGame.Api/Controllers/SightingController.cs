@@ -11,25 +11,37 @@ using NSwag.Annotations;
 
 namespace CarGame.Api.Controllers
 {
-    public class SightingController : BaseApiController
+    public class SightingController(IUnitOfWork unitOfWork, IMapper mapper, ICoordinateTransformationService coordinateTransformationService) : BaseApiController
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly ICoordinateTransformationService _coordinateTransformationService;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly ICoordinateTransformationService _coordinateTransformationService = coordinateTransformationService;
 
-        private readonly IMapper _mapper;
-        public SightingController(IUnitOfWork unitOfWork, IMapper mapper, ICoordinateTransformationService coordinateTransformationService)
-        {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
-            _coordinateTransformationService = coordinateTransformationService;
-        }
+        private readonly IMapper _mapper = mapper;
 
         [HttpGet]
         [OpenApiOperation("GetSightings", "Retrieves all sightings.")]
         [ProducesResponseType(typeof(IEnumerable<SightingUserDto>), 200)]
-        public async Task<ActionResult<IEnumerable<SightingDto>>> GetSightings()
+        public async Task<ActionResult<IEnumerable<SightingUserDto>>> GetSightings()
         {
             var sightings = await _unitOfWork.SightingRepository.GetSightingsAsync().ConfigureAwait(false);
+            return Ok(sightings);
+        }
+
+        [HttpGet("country")]
+        [OpenApiOperation("GetCountrySightings", "Retrieves all country sightings.")]
+        [ProducesResponseType(typeof(IEnumerable<SightingUserDto>), 200)]
+        public async Task<ActionResult<IEnumerable<SightingUserDto>>> GetCountrySightings()
+        {
+            var sightings = await _unitOfWork.SightingRepository.GetCountrySightingsAsync().ConfigureAwait(false);
+            return Ok(sightings);
+        }
+
+        [HttpGet("diplomat")]
+        [OpenApiOperation("GetDiplomatSightings", "Retrieves all diplomat sightings.")]
+        [ProducesResponseType(typeof(IEnumerable<SightingUserDto>), 200)]
+        public async Task<ActionResult<IEnumerable<SightingUserDto>>> GetDiplomatSightings()
+        {
+            var sightings = await _unitOfWork.SightingRepository.GetDiplomatSightingsAsync().ConfigureAwait(false);
             return Ok(sightings);
         }
 
