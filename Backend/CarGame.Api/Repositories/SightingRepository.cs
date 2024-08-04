@@ -57,6 +57,24 @@ namespace CarGame.Api.Repositories
                                  .ConfigureAwait(false);
         }
 
+        public async Task<IEnumerable<SightingUserDto>> GetCountrySightingsAsync()
+        {
+            return await _context.Sightings
+                                 .Where(x => x.IsDiplomat == false)
+                                 .ProjectTo<SightingUserDto>(_mapper.ConfigurationProvider)
+                                 .ToListAsync()
+                                 .ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<SightingUserDto>> GetDiplomatSightingsAsync()
+        {
+            return await _context.Sightings
+                                 .Where(x => x.IsDiplomat == true)
+                                 .ProjectTo<SightingUserDto>(_mapper.ConfigurationProvider)
+                                 .ToListAsync()
+                                 .ConfigureAwait(false);
+        }
+
         private async Task<bool> IsAlreadySeen(Sighting sighting)
         {
             return await _context.Sightings
